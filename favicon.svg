@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- a persistence diagram: the diagonal, one H0 point, one H1 point -->
+  <rect width="32" height="32" rx="7" fill="#244c70"/>
+  <path d="M6 26 26 6" stroke="#faf9f6" stroke-opacity=".55" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="9.5" cy="11" r="3.6" fill="#faf9f6"/>
+  <circle cx="16.5" cy="8.5" r="2.7" fill="none" stroke="#f0908c" stroke-width="2"/>
+</svg>
