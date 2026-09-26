@@ -12,7 +12,7 @@
   'use strict';
 
   const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
-  const INTRO_RISE = 1.9, INTRO_FALL = 0.9;           // seconds
+  const INTRO_RISE = 2.5, INTRO_FALL = 1.2;           // seconds
   const MODES = 16, ETA_STD = 0.045, ETA_THETA = 0.25; // idle terrain noise
   const T_STD = 0.014, T_THETA = 0.35;                 // idle water level
   const DIG_DEPTH = 0.5, DIG_SIGMA = 9, DIG_TAU = 2.4;  // pointer (CSS px, s)
@@ -143,11 +143,12 @@
         .then(() => { this.build(); this.draw(); });
       new MutationObserver(() => { this.readColors(); this.draw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
       matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { this.readColors(); this.draw(); });
-      reduceMQ.addEventListener('change', () => { this.intro = false; this.settle(); this.schedule(); });
+      reduceMQ.addEventListener('change', () => { this.intro = false; this.tLevel = this.tRest; this.u = 0; this.draw(); this.settle(); this.schedule(); });
       document.addEventListener('visibilitychange', () => { this.visible = !document.hidden; this.schedule(); });
       new IntersectionObserver(e => { this.onscreen = e[0].isIntersecting; this.schedule(); }).observe(this.field);
 
-      const skip = () => { if (this.intro) { this.intro = false; this.tLevel = this.tRest; } };
+      const skip = () => { if (this.intro) { this.intro = false; this.tLevel = this.tRest; } this.settle(); };
+      if (!this.intro) this.settle();
       for (const ev of ['keydown', 'wheel', 'touchstart', 'pointerdown', 'scroll']) addEventListener(ev, skip, { once: true, passive: true });
 
       const move = e => {
@@ -167,6 +168,13 @@
       root.addEventListener('pointerleave', up);
 
       this.schedule();
+    }
+
+    // tells the page the flood has peaked, so text can surface as it drains
+    settle() {
+      if (this.settled) return;
+      this.settled = true;
+      dispatchEvent(new Event('flood:settle'));
     }
 
     readColors() {
@@ -319,8 +327,6 @@
       this.min = this.ph(f, W, H, this.h0, this.h1);
     }
 
-    settle() { this.tLevel = this.tRest; this.u = 0; this.draw(); }
-
     schedule() {
       const run = this.visible && this.onscreen && !reduceMQ.matches;
       if (run && !this.raf) { this.last = performance.now(); this.raf = requestAnimationFrame(t => this.tick(t)); }
@@ -340,8 +346,9 @@
           const s = (now - this.introStart) / 1000, top = this.hi, lo = this.lo;
           if (s < INTRO_RISE) { const p = s / INTRO_RISE; this.tLevel = lo + (top - lo) * (1 - Math.pow(1 - p, 2.2)); }
           else if (s < INTRO_RISE + INTRO_FALL) { const p = (s - INTRO_RISE) / INTRO_FALL; this.tLevel = top + (this.tRest - top) * p * p * (3 - 2 * p); }
-          else { this.intro = false; this.tLevel = this.tRest; }
+          else { this.intro = false; this.tLevel = this.tRest; this.settle(); }
           this.risen = s >= INTRO_RISE;
+          if (this.risen) this.settle();
         } else this.tLevel = this.tRest + this.u;
         this.updateField();
         this.draw();
