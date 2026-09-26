@@ -12,7 +12,7 @@
   'use strict';
 
   const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
-  const INTRO_RISE = 2.5, INTRO_FALL = 1.2;           // seconds
+  const INTRO_RISE = 2.5, INTRO_FALL = 2.5;           // seconds; the page's text reveal spans INTRO_FALL too
   const MODES = 16, ETA_STD = 0.045, ETA_THETA = 0.25; // idle terrain noise
   const T_STD = 0.014, T_THETA = 0.35;                 // idle water level
   const DIG_DEPTH = 0.5, DIG_SIGMA = 9, DIG_TAU = 2.4;  // pointer (CSS px, s)
@@ -147,7 +147,7 @@
       document.addEventListener('visibilitychange', () => { this.visible = !document.hidden; this.schedule(); });
       new IntersectionObserver(e => { this.onscreen = e[0].isIntersecting; this.schedule(); }).observe(this.field);
 
-      const skip = () => { if (this.intro) { this.intro = false; this.tLevel = this.tRest; } this.settle(); };
+      const skip = () => { if (this.intro) { this.intro = false; this.tLevel = this.tRest; } this.settle(true); };
       if (!this.intro) this.settle();
       for (const ev of ['keydown', 'wheel', 'touchstart', 'pointerdown', 'scroll']) addEventListener(ev, skip, { once: true, passive: true });
 
@@ -171,10 +171,10 @@
     }
 
     // tells the page the flood has peaked, so text can surface as it drains
-    settle() {
+    settle(skipped) {
       if (this.settled) return;
       this.settled = true;
-      dispatchEvent(new Event('flood:settle'));
+      dispatchEvent(new CustomEvent('flood:settle', { detail: { skipped: !!skipped } }));
     }
 
     readColors() {
