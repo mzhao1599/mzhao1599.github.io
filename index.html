@@ -88,36 +88,39 @@
     .flood-pd { position: relative; z-index: 1; flex: none; width: 112px; margin: 0; padding: 4px 4px 2px; background: var(--paper); border: 1px solid var(--line); }
     .flood-pd canvas { display: block; width: 100%; aspect-ratio: 1; }
     .flood-pd figcaption { padding-top: 2px; color: var(--muted); font: 10.5px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: nowrap; }
-    .how { position: relative; z-index: 1; margin: 10px 0 18px; color: var(--muted); font: 13px/1.5 Arial, sans-serif; }
+    .how { position: relative; z-index: 1; margin: 10px 0 18px; color: var(--muted); font-size: 15px; line-height: 1.5; }
     .how summary { width: fit-content; cursor: pointer; }
     .how p { max-width: 640px; margin: 6px 0 0; }
-    .how i { font-family: Georgia, serif; }
     p { margin: 0 0 8px; }
-    ul { margin: 0 0 16px; padding-left: 22px; }
+    ul { list-style: none; margin: 0 0 16px; padding: 0; }
     li { padding: 2px 0; }
     .built { list-style: none; padding: 0; margin: 0; }
     .built li { padding: 0 0 10px; }
     .built .org { font-weight: 700; }
-    .built .note { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 14px; color: var(--muted); font-size: 15.5px; }
+    .built .note { color: var(--accent); font-size: 15px; }
+    .built .note a { text-decoration-color: currentColor; }
+    .built .note a:hover { text-decoration-thickness: 2px; }
     .icon { display: inline-flex; color: var(--ink); }
     .icon svg { width: 17px; height: 17px; }
     .icon:hover { color: var(--accent); }
-    .icons { display: inline-flex; align-items: center; gap: 12px; }
-    .arxiv { font: 700 14px/1 Arial, sans-serif; letter-spacing: -.01em; text-decoration: none; color: var(--ink); }
-    .arxiv b { color: #b31b1b; }
-    :root[data-theme="dark"] .arxiv b { color: #f0908c; }
+    .icons { display: flex; align-items: center; gap: 12px; margin-top: 3px; }
+    .icon.arxiv { color: #b31b1b; }
+    .icon.arxiv svg { width: 22px; height: 22px; }
+    :root[data-theme="dark"] .icon.arxiv { color: #f0908c; }
+    .icon.arxiv:hover { opacity: .75; }
     /* short laptop screens: tighten so the page still fits without scrolling */
     @media (max-height: 760px) and (min-width: 601px) {
       body { font-size: 16px; line-height: 1.5; }
       header { padding-top: 20px; }
-      main { padding: 30px 0 16px; }
+      main { padding: 24px 0 14px; }
       h1 { font-size: 62px; }
       .flood-pd { width: 100px; }
       .how { margin: 6px 0 12px; }
       ul { margin-bottom: 12px; }
       li { padding: 1px 0; }
       .built li { padding-bottom: 8px; }
-      .built .note { font-size: 15px; }
+      .built .note { font-size: 14.5px; }
+      .icons { margin-top: 1px; }
     }
     @media (max-width: 600px) {
       body { font-size: 16.5px; }
@@ -169,24 +172,24 @@
     <ul class="built">
       <li>
         <div class="org">Palantir Technologies, Valley Forge Grant:</div>
-        <div>flood response operations platform for county-level emergency coordinators</div>
+        <div>Flood response operations platform for county-level emergency coordinators</div>
       </li>
       <li>
         <div class="org">US Naval Research Lab, Radar Division:</div>
-        <div>topology-informed ML models for satellite flood detection</div>
-        <div class="note">Regeneron STS Scholar
-          <span class="icons">
-            <a class="arxiv" href="https://arxiv.org/html/2606.26204v2" title="Paper on arXiv">ar<b>X</b>iv</a>
-            <a class="icon" href="https://github.com/mzhao1599/tda-sen12flood" aria-label="Code on GitHub" title="Code on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
-          </span>
+        <div>Topology-informed ML models for satellite flood detection</div>
+        <div class="note">Regeneron STS Scholar</div>
+        <div class="icons">
+          <a class="icon arxiv" href="https://arxiv.org/html/2606.26204v2" aria-label="Paper on arXiv" title="Paper on arXiv"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.8423 0a1.0037 1.0037 0 0 0-.922.6078c-.1536.3687-.0438.6275.2938 1.1113l6.9185 8.3597-1.0223 1.1058a1.0393 1.0393 0 0 0 .003 1.4229l1.2292 1.3135-5.4391 6.4444c-.2803.299-.4538.823-.2971 1.1986a1.0253 1.0253 0 0 0 .9585.635.9133.9133 0 0 0 .6891-.3405l5.783-6.126 7.4902 8.0051a.8527.8527 0 0 0 .6835.2597.9575.9575 0 0 0 .8777-.6138c.1577-.377-.017-.7502-.306-1.1407l-7.0518-8.3418 1.0632-1.13a.9626.9626 0 0 0 .0089-1.3165L4.6336.4639s-.3733-.4535-.768-.463zm0 .272h.0166c.2179.0052.4874.2715.5644.3639l.005.006.0052.0055 10.169 10.9905a.6915.6915 0 0 1-.0072.945l-1.0666 1.133-1.4982-1.7724-8.5994-10.39c-.3286-.472-.352-.6183-.2592-.841a.7307.7307 0 0 1 .6704-.4401Zm14.341 1.5701a.877.877 0 0 0-.6554.2418l-5.6962 6.1584 1.6944 1.8319 5.3089-6.5138c.3251-.4335.479-.6603.3247-1.0292a1.1205 1.1205 0 0 0-.9763-.689zm-7.6557 12.2823 1.3186 1.4135-5.7864 6.1295a.6494.6494 0 0 1-.4959.26.7516.7516 0 0 1-.706-.4669c-.1119-.2682.0359-.6864.2442-.9083l.0051-.0055.0047-.0055z"/></svg></a>
+          <a class="icon" href="https://github.com/mzhao1599/tda-sen12flood" aria-label="Code on GitHub" title="Code on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
         </div>
       </li>
       <li>
         <div class="org">George Mason University, Algorithms Lab:</div>
-        <div>quantum-inspired algorithm for combinatorial optimization</div>
+        <div>Quantum-inspired algorithm for combinatorial optimization</div>
         <div class="note">S.T. Yau Science Award USA Gold Prize in Physics</div>
-        <div class="note"><a href="https://reference-global.com/article/10.2478/qic-2025-0023?tab=article">Quantum Information and Computation, Vol. 25, Issue 5 (2025)</a>
-          <span class="icons"><a class="icon" href="https://github.com/mzhao1599/qudoku" aria-label="Code on GitHub" title="Code on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a></span>
+        <div class="note"><a href="https://reference-global.com/article/10.2478/qic-2025-0023?tab=article">Quantum Information and Computation, Vol. 25, Issue 5 (2025)</a></div>
+        <div class="icons">
+          <a class="icon" href="https://github.com/mzhao1599/qudoku" aria-label="Code on GitHub" title="Code on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
         </div>
       </li>
     </ul>
