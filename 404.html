@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="robots" content="noindex">
+  <title>Page not found · Max Zhao</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script>
+    (() => {
+      let saved = null;
+      try { saved = localStorage.getItem('max-portfolio-theme'); } catch (e) {}
+      const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    })();
+  </script>
+  <script src="/flood.js" defer></script>
+  <style>
+    :root {
+      --paper: #faf9f6; --ink: #202522; --muted: #656b66; --line: #d9ddd7; --accent: #244c70;
+      --water: #2f6694; --shore: #244c70; --contour: #cdd4cb; --h0: #244c70; --h1: #b3303c;
+      color-scheme: light;
+    }
+    :root[data-theme="dark"] {
+      --paper: #161a19; --ink: #eceee9; --muted: #adb5ad; --line: #3a443e; --accent: #a4c7e4;
+      --water: #5d9bd0; --shore: #a4c7e4; --contour: #33403a; --h0: #a4c7e4; --h1: #f0908c;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    html { overflow-x: clip; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 18px/1.58 Georgia, 'Times New Roman', serif; }
+    a { color: inherit; text-decoration-color: var(--accent); text-underline-offset: .18em; }
+    a:hover { color: var(--accent); }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .wrap { width: min(100% - 48px, 724px); margin-inline: auto; }
+    header { padding-top: 66px; font-size: 16px; }
+    header a { text-decoration: none; }
+    main { padding: 70px 0 90px; }
+    .eyebrow { display: block; margin-bottom: 9px; color: var(--muted); font: 600 12px/1.2 Arial, sans-serif; letter-spacing: .11em; text-transform: uppercase; }
+    h1 { font-size: clamp(72px, 22vw, 150px); line-height: 1; letter-spacing: -.04em; margin: 0; font-weight: 700; }
+    .flood { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin: 0 0 28px; touch-action: pan-y; cursor: crosshair; }
+    .flood-field { position: absolute; z-index: 0; left: -56px; top: -44px; width: calc(100% + 112px); height: calc(100% + 76px); pointer-events: none; }
+    .flood h1 { position: relative; z-index: 1; cursor: text; }
+    .flood-pd { position: relative; z-index: 1; flex: none; width: 138px; margin: 0; padding: 5px 5px 3px; background: var(--paper); border: 1px solid var(--line); }
+    .flood-pd canvas { display: block; width: 100%; aspect-ratio: 1; }
+    .flood-pd figcaption { padding-top: 2px; color: var(--muted); font: 10.5px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: nowrap; }
+    p { max-width: 560px; margin: 0 0 16px; }
+    .note { color: var(--muted); font: 13px/1.5 Arial, sans-serif; }
+    @media (max-width: 600px) {
+      body { font-size: 17px; }
+      .wrap { width: min(100% - 40px, 724px); }
+      header { padding-top: 28px; }
+      main { padding-top: 56px; }
+      .flood { gap: 10px; }
+      .flood-field { left: -20px; width: calc(100% + 40px); top: -38px; height: calc(100% + 66px); }
+      .flood-pd { width: 94px; padding: 3px 3px 2px; }
+      .flood-pd figcaption { font-size: 9px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .flood { cursor: auto; } }
+  </style>
+</head>
+<body>
+  <header class="wrap"><a href="/">← Max Zhao</a></header>
+  <main class="wrap">
+    <span class="eyebrow">Page not found</span>
+    <div class="flood" data-flood>
+      <canvas class="flood-field" aria-hidden="true"></canvas>
+      <h1 data-flood-text>404</h1>
+      <figure class="flood-pd" role="img" aria-label="Persistence diagram of the water filling the digits, updated live">
+        <canvas></canvas>
+        <figcaption aria-hidden="true"><span data-flood-readout>β₀ β₁</span></figcaption>
+      </figure>
+    </div>
+    <p>The water found every pool and island in those three digits, but nothing lives at this address.</p>
+    <p><a href="/">Back to the home page</a> or <a href="/#work">see the projects</a>.</p>
+    <p class="note">Same filtration as the home page: water fills {<i>f</i> ≤ <i>t</i>} on a height field carved from the digits, and the inset counts its components (β₀) and holes (β₁).</p>
+  </main>
+</body>
+</html>
