@@ -52,12 +52,15 @@
     h2 { margin: 78px 0 19px; font-size: 30px; line-height: 1.2; letter-spacing: -.025em; }
     .eyebrow { display: block; margin-bottom: 9px; color: var(--muted); font: 600 12px/1.2 Arial, sans-serif; letter-spacing: .11em; text-transform: uppercase; }
     .work-list { border-top: 1px solid var(--line); }
-    .work-item { display: grid; grid-template-columns: 1fr auto; gap: 6px 20px; padding: 20px 0 23px; border-bottom: 1px solid var(--line); }
-    .work-item h3 { margin: 0; font-size: 21px; line-height: 1.3; }
-    .work-item h3 a { text-decoration: none; }
-    .work-item h3 a:hover { text-decoration: underline; }
-    .work-item time { color: var(--muted); font: 14px/1.7 Arial, sans-serif; white-space: nowrap; }
-    .work-item p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.5; }
+    .project { padding: 24px 0 26px; border-bottom: 1px solid var(--line); scroll-margin-top: 24px; }
+    .project-head { display: grid; grid-template-columns: 1fr auto; gap: 4px 20px; align-items: baseline; margin-bottom: 8px; }
+    .project h3 { margin: 0; font-size: 22px; line-height: 1.3; }
+    .project-head time { color: var(--muted); font: 14px/1.7 Arial, sans-serif; white-space: nowrap; }
+    .project .where { grid-column: 1 / -1; color: var(--muted); font: 14px/1.4 Arial, sans-serif; }
+    .project p { margin: 0 0 10px; font-size: 16.5px; line-height: 1.55; }
+    .project .result { color: var(--muted); }
+    .project .links { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 12px 0 0; font: 15px/1.4 Arial, sans-serif; }
+    .project .stack { color: var(--muted); font: 13px/1.5 Arial, sans-serif; margin-top: 10px; }
     .note { border-left: 2px solid var(--accent); padding: 2px 0 2px 17px; margin-top: 24px; color: var(--muted); font-size: 16px; }
     .recognition { margin: 0; padding-left: 23px; }
     .recognition li { padding: 3px 0; }
@@ -70,8 +73,9 @@
       nav { gap: 6px 15px; font-size: 15px; }
       main { padding-top: 47px; }
       h2 { margin-top: 63px; }
-      .work-item { grid-template-columns: 1fr; }
-      .work-item time { grid-row: 2; }
+      .project-head { grid-template-columns: 1fr; }
+      .project-head time { grid-row: 2; }
+      .project p { font-size: 16px; }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -96,46 +100,75 @@
       <h1 id="name">Max Zhao</h1>
       <div class="intro">
         <p>I study computer science and mathematics at Stanford. I like building systems that turn complex ideas and data into something people can use — from flood response software to machine learning and optimization research.</p>
-        <p>In 2026, I built a flood response platform through Palantir’s Valley Forge Grant. Previously, I worked on satellite imagery models for flood detection at the U.S. Naval Research Lab and on quantum-inspired optimization at George Mason University. Outside of research and code, I play violin.</p>
+        <p>In 2026, I built a flood response platform through Palantir’s Valley Forge Grant and, at DN Hacks, a way for a frozen robot policy to adapt to a changed scene while it “sleeps.” Previously, I worked on satellite imagery models for flood detection at the U.S. Naval Research Lab and on quantum-inspired optimization at George Mason University. Outside of research and code, I play violin.</p>
       </div>
     </section>
 
     <section id="work" aria-labelledby="work-heading">
       <h2 id="work-heading">Selected work</h2>
       <div class="work-list">
-        <article class="work-item">
-          <h3><a href="https://github.com/mzhao1599/dnhacks26">Somnio Robotics ↗</a></h3>
-          <time datetime="2026">2026</time>
-          <p>A frozen vision-language-action robot policy that recovers from a changed environment by tuning a small, gated parameter file offline, with no weight updates.</p>
+        <article class="project" id="somnio">
+          <div class="project-head">
+            <h3>Somnio Robotics</h3>
+            <time datetime="2026">2026</time>
+            <span class="where">DN Hacks 2026 · with two teammates</span>
+          </div>
+          <p>Somnio keeps a robot’s vision-language-action policy (SmolVLA) frozen and adapts it to a changed scene by tuning a small parameter file offline, in unattended “sleep” cycles: 17 numbers covering timing, a speed cap, the gripper, a homing move and approach shaping, or 21 once four camera re-framing numbers are added. A cross-entropy-method search proposes new files, and a gate on a separate set of layouts decides whether one replaces the current version. The policy’s weights never change: no fine-tuning, demonstrations or human labels.</p>
+          <p class="result">In LIBERO simulation, shifting the arm’s starting joints by 0.1&nbsp;rad drops task success from 80% to 22%; one sleep cycle brings it back to 54% and a second to 70% on held-out layouts. A 6° camera tilt drops it from 88% to 14%, and one cycle recovers 58%. Several other tasks recovered only partly or not at all, and the write-up reports those too.</p>
+          <p class="stack">Python · SmolVLA · LIBERO-Plus · cross-entropy method</p>
+          <p class="links"><a href="https://github.com/mzhao1599/dnhacks26">GitHub ↗</a></p>
         </article>
-        <article class="work-item">
-          <h3><a href="#flood-platform">Flood response platform</a></h3>
-          <time datetime="2026">2026</time>
-          <p>A live operations interface unifying gauge readings, emergency alerts, and geospatial data for county flood response.</p>
+
+        <article class="project" id="flood-detection">
+          <div class="project-head">
+            <h3>Topology-informed flood detection</h3>
+            <time datetime="2025">2025</time>
+            <span class="where">U.S. Naval Research Laboratory · with Sophia Li, Raghu G. Raj and Tianyu Chen</span>
+          </div>
+          <p>Detects floods in time series of Sentinel-1 radar and Sentinel-2 optical images. Each image is swept by a sublevel-set filtration on its pixels, and the resulting persistence diagram (which regions appear, merge and enclose holes as the threshold rises) becomes a 200-number feature, about a tenth the size of the ResNet-50’s 2048. That feature is fed, alone or alongside the CNN features, into a GRU that labels every frame of the sequence.</p>
+          <p class="result">On the SEN12-FLOOD benchmark, the paper reports 0.989 frame-level accuracy for the fused model with both sensors, against 0.974 for ResNet50-GRU on the same input and 0.957 previously reported.</p>
+          <p class="stack">Python · PyTorch · CubicalRipser · Sentinel-1/2</p>
+          <p class="links"><a href="https://arxiv.org/abs/2606.26204">Paper · arXiv:2606.26204 ↗</a><a href="https://github.com/mzhao1599/tda-sen12flood">GitHub ↗</a></p>
         </article>
-        <article class="work-item">
-          <h3><a href="https://github.com/mzhao1599/tda-sen12flood">Multimodal flood detection ↗</a></h3>
-          <time datetime="2025">2025</time>
-          <p>Research combining radar and optical satellite imagery, topology-aware features, and sequence models.</p>
+
+        <article class="project" id="qudoku">
+          <div class="project-head">
+            <h3>Qudoku: quantum-inspired optimization</h3>
+            <time datetime="2025">2024–25</time>
+            <span class="where">George Mason University · with Fei Li</span>
+          </div>
+          <p>Writes Sudoku and MaxCut as “find the lowest-energy state of interacting spins” (a QUBO, then an Ising Hamiltonian) and solves them on a laptop by simulating a slow quantum anneal with a matrix product state and DMRG, in Julia with ITensors. A Sudoku grid is 729 yes/no variables; for the demo puzzle, its 23 clues leave 232 spins.</p>
+          <p class="result">The Sudoku anneal reaches the target energy and prints a valid board in about three minutes. On the 80-vertex MaxCut instance pm1s_80.0 it finds a cut of 79, the optimum listed in the Biq Mac library. The paper reports MaxCut instances with up to 251 nodes and 3,265 edges.</p>
+          <p class="stack">Julia · ITensors · matrix product states · DMRG</p>
+          <p class="links"><a href="https://arxiv.org/abs/2510.19835">Paper · <em>Quantum Information &amp; Computation</em> 25 (2025) ↗</a><a href="https://github.com/mzhao1599/qudoku">GitHub ↗</a></p>
         </article>
-        <article class="work-item">
-          <h3><a href="https://github.com/mzhao1599/virtuoso">Virtuoso ↗</a></h3>
-          <time datetime="2026">2026</time>
-          <p>A social practice tracker for musicians, built with Next.js, TypeScript and Supabase.</p>
+
+        <article class="project" id="virtuoso">
+          <div class="project-head">
+            <h3>Virtuoso</h3>
+            <time datetime="2026">2026</time>
+          </div>
+          <p>A social practice tracker for musicians, like Strava for practice sessions: a timer that logs breaks, follows and follow requests, a feed with kudos and comments, streaks, a practice calendar and a leaderboard. While the timer runs, an AudioWorklet keeps a 30-second ring buffer of the microphone, so one click saves a good take after you have played it. Row-level security in Postgres decides who can see a private account’s sessions.</p>
+          <p class="stack">Next.js · React · TypeScript · Tailwind CSS · Supabase</p>
+          <p class="links"><a href="https://virtuoso-coral.vercel.app">Live app ↗</a><a href="https://github.com/mzhao1599/virtuoso">GitHub ↗</a></p>
         </article>
-        <article class="work-item">
-          <h3><a href="https://github.com/mzhao1599/qudoku">Quantum-inspired optimization ↗</a></h3>
-          <time datetime="2025">2024–25</time>
-          <p>Tensor-network methods for QUBO problems, benchmarked on spin Sudoku and MaxCut instances.</p>
+
+        <article class="project" id="flood-platform">
+          <div class="project-head">
+            <h3>Flood response platform</h3>
+            <time datetime="2026">2026</time>
+            <span class="where">Palantir’s Valley Forge Grant</span>
+          </div>
+          <p>A live operations interface unifying gauge readings, emergency alerts and geospatial data for county flood response, with a trigger-based decision engine for emergency response workflows.</p>
         </article>
       </div>
     </section>
 
     <section id="research" aria-labelledby="research-heading">
       <h2 id="research-heading">Research &amp; recognition</h2>
-      <p id="flood-platform"><strong>Flood response software.</strong> Independent product work supported by Palantir’s Valley Forge Grant; built an interface and trigger-based decision engine for emergency response workflows.</p>
-      <p id="flood-detection"><strong>Flood detection.</strong> ML research internship at the U.S. Naval Research Lab. Co-author of <a href="https://arxiv.org/abs/2606.26204">Topology-Informed Neural Networks for Flood Detection in Optical and Synthetic Aperture Radar Imagery</a>; the fused model reached 98.9% accuracy on SEN12-FLOOD, against 95.7% previously reported.</p>
-      <p id="optimization"><strong>Optimization.</strong> First-author work on quantum-inspired algorithms at George Mason University, published in <em>Quantum Information and Computation</em> (<a href="https://arxiv.org/abs/2510.19835">arXiv</a>).</p>
+      <p><strong>Flood detection.</strong> ML research internship at the U.S. Naval Research Laboratory through the Science and Engineering Apprenticeship Program. Co-author of <a href="https://arxiv.org/abs/2606.26204">Topology-Informed Neural Networks for Flood Detection in Optical and Synthetic Aperture Radar Imagery</a> (<a href="#flood-detection">project</a>).</p>
+      <p><strong>Optimization.</strong> First-author work on quantum-inspired algorithms at George Mason University: <a href="https://arxiv.org/abs/2510.19835">A Quantum-Inspired Algorithm for Solving Sudoku Puzzles and the MaxCut Problem</a>, <em>Quantum Information &amp; Computation</em> 25 (2025) (<a href="#qudoku">project</a>).</p>
+      <p><strong>Flood response software.</strong> Independent product work supported by Palantir’s Valley Forge Grant (<a href="#flood-platform">project</a>).</p>
       <ul class="recognition">
         <li>Regeneron Science Talent Search Scholar, 2026</li>
         <li>S.-T. Yau High School Science Award, Gold Prize in Physics, 2025</li>
