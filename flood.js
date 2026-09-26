@@ -448,8 +448,8 @@
       ctx.fillStyle = c.h0; ctx.beginPath(); ctx.arc(X(this.min), 3.5, 3.4, 0, 2 * Math.PI); ctx.fill(); // essential class
 
       if (this.readout) {
-        const txt = `β₀ = ${b0}  β₁ = ${b1}`;
-        if (txt !== this.lastTxt) { this.readout.textContent = txt; this.lastTxt = txt; }
+        const txt = `β<sub>0</sub> = ${b0}&ensp;β<sub>1</sub> = ${b1}`; // b0, b1 are integers
+        if (txt !== this.lastTxt) { this.readout.innerHTML = txt; this.lastTxt = txt; }
       }
     }
   }
