@@ -6,6 +6,15 @@
   <meta name="color-scheme" content="light dark">
   <meta name="description" content="Max Zhao studies computer science and mathematics at Stanford and builds software and research tools.">
   <title>Max Zhao</title>
+  <script>
+    (() => {
+      let saved = null;
+      try { saved = localStorage.getItem('max-portfolio-theme'); } catch (e) {}
+      const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    })();
+  </script>
+  <script src="flood.js" defer></script>
   <style>
     :root {
       --paper: #faf9f6;
@@ -14,6 +23,11 @@
       --line: #d9ddd7;
       --accent: #244c70;
       --surface: #f2f4f0;
+      --water: #2f6694;
+      --shore: #244c70;
+      --contour: #cdd4cb;
+      --h0: #244c70;
+      --h1: #b3303c;
       color-scheme: light;
     }
     :root[data-theme="dark"] {
@@ -23,10 +37,15 @@
       --line: #3a443e;
       --accent: #a4c7e4;
       --surface: #202722;
+      --water: #5d9bd0;
+      --shore: #a4c7e4;
+      --contour: #33403a;
+      --h0: #a4c7e4;
+      --h1: #f0908c;
       color-scheme: dark;
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
     body {
       margin: 0;
       background: var(--paper);
@@ -46,10 +65,22 @@
     nav a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
     #theme { border: 0; background: transparent; color: var(--ink); padding: 7px 9px; cursor: pointer; font: 20px Georgia, serif; }
     main { padding-top: 46px; }
-    h1 { font-size: clamp(46px, 8vw, 62px); line-height: 1.05; letter-spacing: -.045em; margin: 0 0 25px; font-weight: 700; }
+    h1 { font-size: clamp(46px, 9vw, 72px); line-height: 1.05; letter-spacing: -.045em; margin: 0; font-weight: 700; }
+    .flood { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin: 0 0 14px; padding-top: 6px; touch-action: pan-y; cursor: crosshair; }
+    .flood-field { position: absolute; z-index: 0; left: -56px; top: -44px; width: calc(100% + 112px); height: calc(100% + 76px); pointer-events: none; }
+    .flood h1 { position: relative; z-index: 1; padding-bottom: 4px; cursor: text; }
+    .flood-pd { position: relative; z-index: 1; flex: none; width: 138px; margin: 0; padding: 5px 5px 3px; background: var(--paper); border: 1px solid var(--line); }
+    .flood-pd canvas { display: block; width: 100%; aspect-ratio: 1; }
+    .flood-pd figcaption { display: flex; justify-content: space-between; gap: 6px; padding-top: 2px; color: var(--muted); font: 10.5px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: nowrap; }
+    .fig-note { max-width: 640px; margin: 0 0 30px; color: var(--muted); font: 13px/1.5 Arial, sans-serif; }
+    .fig-note i { font-family: Georgia, serif; }
     .intro { max-width: 690px; }
     .intro p { margin: 0 0 19px; }
     h2 { margin: 78px 0 19px; font-size: 30px; line-height: 1.2; letter-spacing: -.025em; }
+    /* a two-point persistence diagram as the section mark */
+    h2::before { content: ""; display: inline-block; width: .6em; height: .6em; margin-right: .38em; background: var(--accent);
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M.5 11.5 11.5.5' stroke='%23000' stroke-width='1'/%3E%3Ccircle cx='2.6' cy='3.6' r='1.7'/%3E%3Ccircle cx='6.2' cy='3.2' r='1.4' fill='none' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E") center / contain no-repeat;
+              mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M.5 11.5 11.5.5' stroke='%23000' stroke-width='1'/%3E%3Ccircle cx='2.6' cy='3.6' r='1.7'/%3E%3Ccircle cx='6.2' cy='3.2' r='1.4' fill='none' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E") center / contain no-repeat; }
     .eyebrow { display: block; margin-bottom: 9px; color: var(--muted); font: 600 12px/1.2 Arial, sans-serif; letter-spacing: .11em; text-transform: uppercase; }
     .work-list { border-top: 1px solid var(--line); }
     .project { padding: 24px 0 26px; border-bottom: 1px solid var(--line); scroll-margin-top: 24px; }
@@ -72,6 +103,12 @@
       header { padding-top: 28px; align-items: flex-start; }
       nav { gap: 6px 15px; font-size: 15px; }
       main { padding-top: 47px; }
+      .flood { gap: 10px; }
+      .flood-field { left: -20px; width: calc(100% + 40px); top: -38px; height: calc(100% + 66px); }
+      .flood-pd { width: 94px; padding: 3px 3px 2px; }
+      .flood-pd figcaption { font-size: 9px; }
+      .flood-pd figcaption span + span { display: none; }
+      .fig-note { font-size: 12.5px; }
       h2 { margin-top: 63px; }
       .project-head { grid-template-columns: 1fr; }
       .project-head time { grid-row: 2; }
@@ -80,6 +117,8 @@
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       body { transition: none; }
+      .flood { cursor: auto; }
+      .fig-dig { display: none; }
     }
   </style>
 </head>
@@ -97,8 +136,15 @@
   <main id="content" class="wrap">
     <section id="about" aria-labelledby="name">
       <span class="eyebrow">Stanford · computer science + mathematics</span>
-      <h1 id="name">Max Zhao</h1>
-      <div class="intro">
+      <div class="flood" data-flood>
+        <canvas class="flood-field" aria-hidden="true"></canvas>
+        <h1 id="name" data-flood-text>Max Zhao</h1>
+        <figure class="flood-pd" role="img" aria-label="Persistence diagram of the water filling the heading, updated live">
+          <canvas></canvas>
+          <figcaption aria-hidden="true"><span data-flood-readout>β₀ β₁</span><span>b→d</span></figcaption>
+        </figure>
+      </div>
+      <p class="fig-note">The name is terrain: <i>f</i> = 1 − 0.62 G₁∗L − 0.30 G₂∗L + η, blurred letter masks carved into a random field η whose Fourier coefficients follow Ornstein–Uhlenbeck processes. Water fills the sublevel set {<i>f</i> ≤ <i>t</i>}, the pixel filtration the flood paper runs on radar images, and the inset is its persistence diagram, recomputed every frame by union-find: ● pools (H₀), ○ islands (H₁), β their counts at the current level.<span class="fig-dig"> Drag across the name to dig channels and rings.</span></p>      <div class="intro">
         <p>I study computer science and mathematics at Stanford. I like building systems that turn complex ideas and data into something people can use — from flood response software to machine learning and optimization research.</p>
         <p>In 2026, I built a flood response platform through Palantir’s Valley Forge Grant and, at DN Hacks, a way for a frozen robot policy to adapt to a changed scene while it “sleeps.” Previously, I worked on satellite imagery models for flood detection at the U.S. Naval Research Lab and on quantum-inspired optimization at George Mason University. Outside of research and code, I play violin.</p>
       </div>
@@ -184,8 +230,6 @@
   <script>
     const root = document.documentElement;
     const button = document.getElementById('theme');
-    const saved = localStorage.getItem('max-portfolio-theme');
-    if (saved === 'dark') root.dataset.theme = 'dark';
     function updateButton() {
       const dark = root.dataset.theme === 'dark';
       button.textContent = dark ? '☾' : '☼';
@@ -194,7 +238,7 @@
     updateButton();
     button.addEventListener('click', () => {
       root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('max-portfolio-theme', root.dataset.theme);
+      try { localStorage.setItem('max-portfolio-theme', root.dataset.theme); } catch (e) {}
       updateButton();
     });
   </script>
