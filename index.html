@@ -45,6 +45,7 @@
     })();
   </script>
   <script src="flood.js" defer></script>
+  <script data-goatcounter="https://mzhao1599.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous">
   <style>
     :root {
@@ -205,6 +206,14 @@
       try { localStorage.setItem('max-portfolio-theme', root.dataset.theme); } catch (e) {}
       updateButton();
     });
+    // count clicks out to papers, code and profiles as GoatCounter events
+    const countOut = e => {
+      const a = e.target.closest('a[href]');
+      if (!a || a.host === location.host || !window.goatcounter || !goatcounter.count) return;
+      goatcounter.count({ event: true, path: a.href, title: a.getAttribute('aria-label') || a.textContent.trim() });
+    };
+    addEventListener('click', countOut);
+    addEventListener('auxclick', countOut);
   </script>
 </body>
 </html>
