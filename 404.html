@@ -12,7 +12,8 @@
   <script>
     (() => {
       let saved = null;
-      try { saved = localStorage.getItem('max-portfolio-theme'); } catch (e) {}
+      // v2 drops choices saved before dark became the default
+      try { saved = localStorage.getItem('max-portfolio-theme-v2'); } catch (e) {}
       const dark = saved !== 'light';
       document.documentElement.dataset.theme = dark ? 'dark' : 'light';
     })();

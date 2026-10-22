@@ -62,7 +62,8 @@
   <script>
     (() => {
       let saved = null;
-      try { saved = localStorage.getItem('max-portfolio-theme'); } catch (e) {}
+      // v2 drops choices saved before dark became the default
+      try { saved = localStorage.getItem('max-portfolio-theme-v2'); } catch (e) {}
       const dark = saved !== 'light';
       document.documentElement.dataset.theme = dark ? 'dark' : 'light';
       // hold the text back while the flood intro plays; flood.js fires flood:settle
@@ -237,7 +238,7 @@
     updateTheme();
     button.addEventListener('click', () => {
       root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-      try { localStorage.setItem('max-portfolio-theme', root.dataset.theme); } catch (e) {}
+      try { localStorage.setItem('max-portfolio-theme-v2', root.dataset.theme); } catch (e) {}
       updateTheme();
     });
     // count clicks out to papers, code and profiles as GoatCounter events
