@@ -6,8 +6,7 @@
   <meta name="color-scheme" content="light dark">
   <meta name="description" content="Max Zhao studies computer science and mathematics at Stanford and builds flood response software, topology-informed flood detection models and quantum-inspired optimization algorithms.">
   <meta name="author" content="Max Zhao">
-  <meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#161a19" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#161a19">
   <link rel="canonical" href="https://maxzhao.us/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/favicon.ico" sizes="48x48">
@@ -64,7 +63,7 @@
     (() => {
       let saved = null;
       try { saved = localStorage.getItem('max-portfolio-theme'); } catch (e) {}
-      const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      const dark = saved !== 'light';
       document.documentElement.dataset.theme = dark ? 'dark' : 'light';
       // hold the text back while the flood intro plays; flood.js fires flood:settle
       // as the water starts to drain (or at once if the intro is skipped)
@@ -228,16 +227,18 @@
   <script>
     const root = document.documentElement;
     const button = document.getElementById('theme');
-    function updateButton() {
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    function updateTheme() {
       const dark = root.dataset.theme === 'dark';
       button.textContent = dark ? '☾' : '☼';
       button.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+      themeColor.content = dark ? '#161a19' : '#faf9f6';
     }
-    updateButton();
+    updateTheme();
     button.addEventListener('click', () => {
       root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
       try { localStorage.setItem('max-portfolio-theme', root.dataset.theme); } catch (e) {}
-      updateButton();
+      updateTheme();
     });
     // count clicks out to papers, code and profiles as GoatCounter events
     const countOut = e => {

@@ -13,7 +13,7 @@
     (() => {
       let saved = null;
       try { saved = localStorage.getItem('max-portfolio-theme'); } catch (e) {}
-      const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      const dark = saved !== 'light';
       document.documentElement.dataset.theme = dark ? 'dark' : 'light';
     })();
   </script>
